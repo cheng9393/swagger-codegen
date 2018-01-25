@@ -12,6 +12,18 @@ module {{moduleName}}
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+
+    class << self
+      def default
+        @@default ||= ApiClient.new
+      end
+      {{#operation}}
+      {{newline}}
+      def {{operationId}}({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}opts = {})
+        default.{{operationId}}({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}opts)
+      end
+      {{/operation}}
+    end
 {{#operation}}
 {{newline}}
     # {{{summary}}}
