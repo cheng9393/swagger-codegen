@@ -2,6 +2,8 @@
 {{> api_info}}
 =end
 
+require 'json'
+
 module {{moduleName}}
   class ApiError < StandardError
     attr_reader :code, :response_headers, :response_body
@@ -26,5 +28,19 @@ module {{moduleName}}
         super arg
       end
     end
+  end
+
+  class ApiRuntimeError < ApiError
+    attr_reader :timestamp, :status, :error, :message, :path
+
+    def initialize(arg = nil)
+      error_json = JSON.parse(arg[:response_body])
+      if [:timestamp, :status, :error, :message, :path].all? {|k| error_json.key? k}
+        super arg.merge(error_json)
+      else
+        fail 'Unexpected error response body'
+      end
+    end
+
   end
 end
