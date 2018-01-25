@@ -15,7 +15,7 @@ module {{moduleName}}
 
     class << self
       def default
-        @@default ||= ApiClient.new
+        @@default ||= {{classname}}.new
       end
       {{#operation}}
       {{newline}}

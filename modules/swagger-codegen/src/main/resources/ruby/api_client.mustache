@@ -30,12 +30,12 @@ module {{moduleName}}
       }
     end
 
-    def self.default(apiClient = nil)
-      if apiClient
-        @@default = apiClient
-      else
-        @@default ||= ApiClient.new
-      end
+    def self.default=(apiClient)
+      @@default = apiClient
+    end
+
+    def self.default
+      @@default ||= ApiClient.new
     end
 
     # Call an API with given options.
